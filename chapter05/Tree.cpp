@@ -215,6 +215,52 @@ public:
     }
 };
 
+class PostThread {
+private:
+    // 全局变量 pre 指向当前结点的前驱
+    ThreadNode *pre;
+
+    // 先序遍历线索二叉树
+    void postThread(ThreadTree t) {
+        if (t != NULL) {
+            visit(t);
+            postThread(t->rChild);
+            postThread(t->lChild);
+        }
+    }
+
+    void visit(ThreadNode *q) {
+        // 当前结点的左子树为空，建立前驱线索
+        if (q->lChild == NULL) {
+            q->lChild = pre;
+            q->lTag = 1;
+        }
+        // 前驱结点不为 NULL，并且右子树为空时，为前驱结点建立后继线索
+        if (pre != NULL && pre->rChild == NULL) {
+            pre->rChild = q;
+            pre->rTag = 1;
+        }
+        pre = q;
+    }
+
+public:
+    void createPostThread(ThreadTree t) {
+        // pre 初始化为NULL
+        pre = NULL;
+        // 非空二叉树才可以线索化
+        if (t != NULL) {
+            // 先序线索化二叉树
+            postThread(t);
+            // 处理遍历的最后一个结点
+            // 因为先序遍历的最后一个结点的右孩子指针必为空
+            // 所以这里可以不用判断 rChild 是否为 NULL，直接将 rTag 设为 1
+            if (pre->rChild == NULL)
+                pre->rTag = 1;
+        }
+
+    }
+};
+
 int main() {
     // 初始化所有结点标记为空
 //    for (int i = 0; i < MaxSize; i++) {
