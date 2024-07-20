@@ -22,3 +22,18 @@ int searchSeqWithSentinel(SSTable ssTable, int key) {
     // 查找成功则返回元素下标，失败则返回 0
     return i;
 }
+
+int binarySearch(SSTable ssTable, int key) {
+    int low = 0, high = ssTable.tableLen - 1, mid;
+    while (low <= high) {
+        mid = (low + high) / 2;
+        if (ssTable.elem[mid] == key) {
+            return mid;
+        } else if (ssTable.elem[mid] > key) {
+            high = mid - 1;
+        } else if (ssTable.elem[mid] < key) {
+            low = mid + 1;
+        }
+    }
+    return -1;
+}
