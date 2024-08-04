@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 //
 // Created by 86155 on 2024/7/20.
 //
@@ -37,3 +39,60 @@ int binarySearch(SSTable ssTable, int key) {
     }
     return -1;
 }
+
+// 二叉排序树结点
+typedef struct BSTNode {
+    int key;
+    struct BSTNode *lChild, *rChild;
+} BSTNode, *BSTree;
+
+// 二叉排序树查找
+BSTNode *bstSearch(int key, BSTree t) {
+    while (t != nullptr && key != t->key) {
+        t = t->key < key ? t->lChild : t->rChild;
+    }
+    return t;
+}
+
+// 二叉排序树的递归实现
+BSTNode *bstSearchLoop(int key, BSTree t) {
+    while (t != nullptr && key != t->key) {
+        t = bstSearchLoop(key, t->key < key ? t->lChild : t->rChild);
+    }
+    return t;
+}
+
+// 二叉排序树的插入
+int bstInsert(int k, BSTree &t) {
+    if (t == nullptr) {
+        t = (BSTree) malloc(sizeof(BSTNode));
+        t->key = k;
+        t->lChild = t->rChild = nullptr;
+        return 1;
+    } else if (t->key == k) {
+        return 0;
+    } else if (k > t->key) {
+        return bstInsert(k, t->rChild);
+    } else if (k < t->key) {
+        return bstInsert(k, t->lChild);
+    } else {
+        return 0;
+    }
+}
+
+BSTree createBST(int str[], int n) {
+    BSTree t = nullptr;
+    for (int i = 0; i < n; i++) {
+        bstInsert(str[i], t);
+    }
+    return t;
+}
+
+// 平衡二叉树结点
+typedef struct AVLNode {
+    // 数据域
+    int key;
+    // 平衡因子
+    int balance;
+    struct AVLNode *lChild, *rChild;
+} AVLNode, *AVLTree;

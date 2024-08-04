@@ -5,4 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(data_structure
         chapter05/Tree.cpp
-        chapter07/Find.cpp)
+        chapter07/Find.cpp
+        chapter08/Sort.cpp
+)
